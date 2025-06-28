@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+
+# React build files
+ticket-managing-tool/build/
+
+# Logs
+*.log
+
+# Data files
+*.xlsx
+
+# Env config
+.env
