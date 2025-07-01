@@ -1,28 +1,68 @@
 const express = require("express");
 const cors = require("cors");
-const xlsx = require("xlsx");
-const fs = require("fs");
-const path = require("path");
+
+const sequelize = require("./database");
+const Ticket = require("./models/Ticket");
+const Employee = require("./models/Employee");
+
 const app = express();
 const port = 5000;
 
 app.use(cors());
 app.use(express.json());
 
-const EXCEL_FILE_PATH = path.join(__dirname, "data", "ticket_data.xlsx");
+// Test DB connection (optional)
+sequelize.authenticate()
+  .then(() => console.log("✅ Connected to MySQL database"))
+  .catch((err) => console.error("❌ Failed to connect to DB:", err));
 
-app.get("/data", (req, res) => {
+// API: Fetch all tickets
+app.get("/api/tickets", async (req, res) => {
   try {
-    if (!fs.existsSync(EXCEL_FILE_PATH)) {
-      return res.status(404).json({ success: false, message: "File not found." });
-    }
-    const workbook = xlsx.readFile(EXCEL_FILE_PATH);
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = xlsx.utils.sheet_to_json(sheet);
-    res.json({ success: true, data });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Error reading file." });
+    const tickets = await Ticket.findAll();
+    res.json(tickets);
+  } catch (err) {
+    console.error("Error fetching tickets:", err);
+    res.status(500).json({ message: "Failed to fetch tickets" });
   }
 });
 
-app.listen(port, () => console.log(`🚀 Backend running on http://localhost:${port}/data`));
+// API: Fetch all employees with stats
+app.get("/api/employees", async (req, res) => {
+  try {
+    const tickets = await Ticket.findAll();
+    const employees = await Employee.findAll();
+
+    const employeeMap = {};
+
+    for (const emp of employees) {
+      employeeMap[emp.name] = {
+        employeeId: emp.employeeId,
+        name: emp.name,
+        totalHours: emp.totalHours || 0,
+        openTickets: 0,
+        closedTickets: 0,
+      };
+    }
+
+    for (const t of tickets) {
+      const name = t.employeeName;
+      if (employeeMap[name]) {
+        if ((t.status || "").toLowerCase().includes("open")) {
+          employeeMap[name].openTickets += 1;
+        } else if ((t.status || "").toLowerCase().includes("closed")) {
+          employeeMap[name].closedTickets += 1;
+        }
+      }
+    }
+
+    res.json(Object.values(employeeMap));
+  } catch (err) {
+    console.error("Error fetching employee data:", err);
+    res.status(500).json({ message: "Failed to fetch employees" });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`🚀 Server running at http://localhost:${port}`);
+});
