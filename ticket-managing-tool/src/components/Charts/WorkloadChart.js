@@ -1,6 +1,15 @@
-// WorkloadChart.js
 import React from "react";
 import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function WorkloadChart({ data }) {
   const hoursByEmployee = data.reduce((acc, ticket) => {

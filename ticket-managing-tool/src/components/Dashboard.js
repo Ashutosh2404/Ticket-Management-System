@@ -7,25 +7,33 @@ import WorkloadChart from "./Charts/WorkloadChart";
 import TicketTable from "./TicketTable";
 
 function Dashboard() {
-  const [data, setData] = useState([]);
+  const [tickets, setTickets] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/data")
+    // Fetch tickets
+    fetch("http://localhost:5000/api/tickets")
       .then(res => res.json())
-      .then(json => setData(json.data || []))
-      .catch(err => console.error("Error loading data:", err));
+      .then(json => setTickets(json || [])) // ✅ fix response shape
+      .catch(err => console.error("Error loading tickets:", err));
+
+    // Fetch employees
+    fetch("http://localhost:5000/api/employees")
+      .then(res => res.json())
+      .then(json => setEmployees(json || []))
+      .catch(err => console.error("Error loading employees:", err));
   }, []);
 
   return (
     <div>
-      <SummaryCards data={data} />
+      <SummaryCards data={tickets} />
       <div className="charts-container">
-        <StatusPieChart data={data} />
-        <CategoryBarChart data={data} />
-        <EffortComparisonChart data={data} />
-        <WorkloadChart data={data} />
+        <StatusPieChart data={tickets} />
+        <CategoryBarChart data={tickets} />
+        <EffortComparisonChart data={tickets} />
+        <WorkloadChart data={employees} /> {/* ✅ Now uses API-backed employee data */}
       </div>
-      <TicketTable data={data} />
+      <TicketTable data={tickets} />
     </div>
   );
 }
