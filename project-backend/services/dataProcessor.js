@@ -25,7 +25,7 @@ async function validateAndInsertRows(jsonData) {
     }
 
     // Insert into DataImported table
-    await DataImported.create({
+    await DataImported.upsert({
       employeeName,
       date,
       ticketNumber,

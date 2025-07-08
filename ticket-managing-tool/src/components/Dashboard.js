@@ -31,7 +31,7 @@ function Dashboard() {
         <StatusPieChart data={tickets} />
         <CategoryBarChart data={tickets} />
         <EffortComparisonChart data={tickets} />
-        <WorkloadChart data={employees} /> {/* ✅ Now uses API-backed employee data */}
+        <WorkloadChart />
       </div>
       <TicketTable data={tickets} />
     </div>

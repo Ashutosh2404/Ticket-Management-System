@@ -3,20 +3,29 @@ import React from "react";
 function SummaryCards({ data }) {
   const totalTickets = data.length;
 
-  const openTickets = data.filter(ticket => ticket.Status === "Open").length;
-  const closedTickets = data.filter(ticket => ticket.Status === "Closed").length;
+  // Match correct field: `status`
+  const openTickets = data.filter(ticket => ticket.status === "Open").length;
+  const closedTickets = data.filter(ticket => ticket.status === "Closed").length;
 
+  // Match correct field: `hoursWorked`
   const avgResolutionTime =
-    (data.reduce((sum, ticket) => sum + Number(ticket["Hours worked"] || 0), 0) / totalTickets).toFixed(1);
+    totalTickets > 0
+      ? (
+          data.reduce((sum, ticket) => sum + Number(ticket.hoursWorked || 0), 0) / totalTickets
+        ).toFixed(1)
+      : "0.0";
 
+  // Match correct fields: `hoursEstimated` & `hoursWorked`
   const avgAccuracy =
-    (
-      data.reduce((sum, ticket) => {
-        const estimated = Number(ticket["Hours estimated"] || 0);
-        const actual = Number(ticket["Hours worked"] || 0);
-        return sum + Math.abs(estimated - actual);
-      }, 0) / totalTickets
-    ).toFixed(1);
+    totalTickets > 0
+      ? (
+          data.reduce((sum, ticket) => {
+            const estimated = Number(ticket.hoursEstimated || 0);
+            const actual = Number(ticket.hoursWorked || 0);
+            return sum + Math.abs(estimated - actual);
+          }, 0) / totalTickets
+        ).toFixed(1)
+      : "0.0";
 
   return (
     <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "20px" }}>

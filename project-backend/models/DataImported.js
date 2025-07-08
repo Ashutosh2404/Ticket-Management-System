@@ -47,12 +47,18 @@ const DataImported = sequelize.define("DataImported", {
     allowNull: false,
   },
   uploadDate: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
+  type: DataTypes.DATEONLY, 
+  defaultValue: DataTypes.NOW,
+  allowNull: false,
   }
 }, {
   updatedAt: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ["ticketNumber", "employeeName", "uploadDate"], 
+    },
+  ],
 });
 
 module.exports = DataImported;

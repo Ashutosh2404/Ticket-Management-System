@@ -13,7 +13,8 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function CategoryBarChart({ data }) {
   const categories = data.reduce((acc, ticket) => {
-    const category = ticket["Ticket category"] || "Others";
+    const category = ticket.category || "Others";
+
     acc[category] = (acc[category] || 0) + 1;
     return acc;
   }, {});

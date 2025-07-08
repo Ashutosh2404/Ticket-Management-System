@@ -11,7 +11,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function StatusPieChart({ data }) {
   const statusCounts = data.reduce((acc, ticket) => {
-    const status = ticket.Status || "Unknown";
+    const status = ticket.status || "Unknown";
     acc[status] = (acc[status] || 0) + 1;
     return acc;
   }, {});

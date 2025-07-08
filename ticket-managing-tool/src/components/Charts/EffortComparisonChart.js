@@ -12,9 +12,9 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function EffortComparisonChart({ data }) {
-  const labels = data.map(ticket => ticket["Ticket Number"]);
-  const estimated = data.map(ticket => Number(ticket["Hours estimated"] || 0));
-  const actual = data.map(ticket => Number(ticket["Hours worked"] || 0));
+  const labels = data.map(ticket => ticket.ticketNumber);
+  const estimated = data.map(ticket => Number(ticket.hoursEstimated || 0));
+  const actual = data.map(ticket => Number(ticket.hoursWorked || 0));
 
   const chartData = {
     labels,

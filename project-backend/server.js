@@ -4,6 +4,7 @@ const cors = require("cors");
 const sequelize = require("./database");
 const Ticket = require("./models/Ticket");
 const Employee = require("./models/Employee");
+const DataImported = require("./models/DataImported");
 
 const app = express();
 const port = 5000;
@@ -24,6 +25,35 @@ app.get("/api/tickets", async (req, res) => {
   } catch (err) {
     console.error("Error fetching tickets:", err);
     res.status(500).json({ message: "Failed to fetch tickets" });
+  }
+});
+
+// API: Fetch all employees for the Employee workload chart
+app.get("/api/employee-workload", async (req, res) => {
+  try {
+    const data = await DataImported.findAll();
+
+    const workload = {};
+
+    for (const row of data) {
+      const name = row.employeeName || "Unknown";
+      const hours = parseFloat(row.hoursWorked) || 0;
+
+      if (!workload[name]) {
+        workload[name] = 0;
+      }
+      workload[name] += hours;
+    }
+
+    const response = Object.keys(workload).map(name => ({
+      name,
+      hoursWorked: workload[name],
+    }));
+
+    res.json(response);
+  } catch (err) {
+    console.error("Error fetching employee workload:", err);
+    res.status(500).json({ message: "Failed to fetch workload" });
   }
 });
 
