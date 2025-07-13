@@ -93,6 +93,39 @@ app.get("/api/employees", async (req, res) => {
   }
 });
 
+// API: Fetch employee ticket stats from DataImported
+app.get("/api/employee-ticket-stats", async (req, res) => {
+  try {
+    const data = await DataImported.findAll();
+    const employeeStats = {};
+
+    for (const row of data) {
+      const name = row.employeeName || "Unknown";
+      if (!employeeStats[name]) {
+        employeeStats[name] = {
+          employeeName: name,
+          ticketsAssigned: 0,
+          openTickets: 0,
+          closedTickets: 0,
+          totalHours: 0,
+        };
+      }
+      employeeStats[name].ticketsAssigned += 1;
+      employeeStats[name].totalHours += parseFloat(row.hoursWorked) || 0;
+      if ((row.status || "").toLowerCase() === "open") {
+        employeeStats[name].openTickets += 1;
+      } else if ((row.status || "").toLowerCase() === "closed") {
+        employeeStats[name].closedTickets += 1;
+      }
+    }
+
+    res.json(Object.values(employeeStats));
+  } catch (err) {
+    console.error("Error fetching employee ticket stats:", err);
+    res.status(500).json({ message: "Failed to fetch employee ticket stats" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });

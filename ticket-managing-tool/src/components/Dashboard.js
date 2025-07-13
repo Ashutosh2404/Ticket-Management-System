@@ -37,7 +37,7 @@ function Dashboard() {
       </div>
       <EffortComparisonChart data={tickets} />
       <WorkloadChart />
-      <TicketTable data={tickets} />
+      
     </div>
   );
 }

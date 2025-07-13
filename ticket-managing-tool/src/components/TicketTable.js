@@ -1,26 +1,22 @@
 import React from "react";
 
-function TicketTable({ data }) {
-  if (data.length === 0) return null;
+function TicketTable({ data = [] }) {
+  if (!data || data.length === 0) {
+    return <div className="mt-6 text-center text-gray-500">No tickets found.</div>;
+  }
 
   const columns = Object.keys(data[0]);
 
   return (
-    <div style={{ overflowX: "auto", marginTop: "30px" }}>
-      <h3>All Tickets</h3>
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead>
+    <div className="overflow-x-auto mt-8">
+      <h3 className="text-lg font-semibold mb-4 text-gray-700">All Tickets</h3>
+      <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-gray-200">
           <tr>
             {columns.map((col, idx) => (
               <th
                 key={idx}
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "10px",
-                  background: "#f3f4f6",
-                  fontWeight: "bold",
-                  textAlign: "left",
-                }}
+                className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider"
               >
                 {col}
               </th>
@@ -29,17 +25,16 @@ function TicketTable({ data }) {
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr
+              key={rowIndex}
+              className={`${rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"} hover:bg-blue-50`}
+            >
               {columns.map((col, colIndex) => (
                 <td
                   key={colIndex}
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "8px",
-                    backgroundColor: "#fff",
-                  }}
+                  className="px-4 py-2 text-sm text-gray-600"
                 >
-                  {row[col]}
+                  {row[col] !== null && row[col] !== undefined ? row[col] : "-"}
                 </td>
               ))}
             </tr>

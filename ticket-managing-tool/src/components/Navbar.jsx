@@ -1,6 +1,8 @@
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
+  const navigate = useNavigate();
   return (
     <nav className="bg-zinc-800 w-full top-0 z-50">
       <div className="flex items-center justify-between px-6 py-3">
@@ -17,24 +19,24 @@ export function Navbar() {
         </div>
         {/* Center: Menu */}
         <div className="flex space-x-6">
-          <a
-            href="#dashboard"
-            className="text-white hover:text-slate-200 font-medium"
+          <button
+            onClick={() => navigate("/")}
+            className="text-white hover:text-slate-200 font-medium bg-transparent border-none cursor-pointer"
           >
             Dashboard
-          </a>
-          <a
-            href="#employees"
-            className="text-white hover:text-slate-200 font-medium"
+          </button>
+          <button
+            onClick={() => navigate("/employees")}
+            className="text-white hover:text-slate-200 font-medium bg-transparent border-none cursor-pointer"
           >
             Employee
-          </a>
-          <a
-            href="#tickets"
-            className="text-white hover:text-slate-200 font-medium"
+          </button>
+          <button
+            onClick={() => navigate("/tickets")}
+            className="text-white hover:text-slate-200 font-medium bg-transparent border-none cursor-pointer"
           >
             Tickets
-          </a>
+          </button>
         </div>
         {/* Right: User Icon */}
         <div>
