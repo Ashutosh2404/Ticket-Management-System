@@ -28,30 +28,23 @@ function SummaryCards({ data }) {
       : "0.0";
 
   return (
-    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "20px" }}>
-      <Card title="Total Tickets" value={totalTickets} />
-      <Card title="Open Tickets" value={openTickets} />
-      <Card title="Closed Tickets" value={closedTickets} />
-      <Card title="Avg Resolution Time" value={`${avgResolutionTime} h`} />
-      <Card title="Avg Estimation Error" value={`${avgAccuracy} h`} />
+    <div className="w-full p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-8">
+      <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-between">
+        <Card title="Total Tickets" value={totalTickets} />
+        <Card title="Open Tickets" value={openTickets} />
+        <Card title="Closed Tickets" value={closedTickets} />
+        <Card title="Avg Resolution Time" value={`${avgResolutionTime} h`} />
+        <Card title="Avg Estimation Error" value={`${avgAccuracy} h`} />
+      </div>
     </div>
   );
 }
 
 function Card({ title, value }) {
   return (
-    <div
-      style={{
-        padding: "20px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        width: "200px",
-        backgroundColor: "#f3f4f6",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-      }}
-    >
-      <h4 style={{ marginBottom: "10px", fontSize: "16px", color: "#333" }}>{title}</h4>
-      <div style={{ fontSize: "24px", fontWeight: "bold", color: "#1f2937" }}>{value}</div>
+    <div className="min-w-[160px] max-w-[250px] p-4 sm:p-5 bg-white bg-opacity-90 border border-gray-300 rounded-xl shadow hover:shadow-lg transition-shadow duration-300 flex flex-col items-center">
+      <h4 className="mb-2 text-sm sm:text-base font-semibold text-gray-700">{title}</h4>
+      <div className="text-xl sm:text-2xl font-bold text-gray-800">{value}</div>
     </div>
   );
 }

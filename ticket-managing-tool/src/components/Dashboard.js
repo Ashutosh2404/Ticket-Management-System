@@ -27,12 +27,16 @@ function Dashboard() {
   return (
     <div>
       <SummaryCards data={tickets} />
-      <div className="charts-container">
-        <StatusPieChart data={tickets} />
-        <CategoryBarChart data={tickets} />
-        <EffortComparisonChart data={tickets} />
-        <WorkloadChart />
+      <div className="flex flex-wrap gap-6 charts-container">
+        <div className="flex-1 min-w-[300px]">
+          <StatusPieChart data={tickets} />
+        </div>
+        <div className="flex-1 min-w-[300px]">
+          <CategoryBarChart data={tickets} />
+        </div>
       </div>
+      <EffortComparisonChart data={tickets} />
+      <WorkloadChart />
       <TicketTable data={tickets} />
     </div>
   );
