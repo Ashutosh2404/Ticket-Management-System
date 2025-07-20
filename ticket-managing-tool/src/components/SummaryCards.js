@@ -1,7 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
 function SummaryCards({ data }) {
+  
   const navigate = useNavigate();
+
+  if (!Array.isArray(data)) {
+  console.error("Invalid data for SummaryCards:", data);
+  return <div>Failed to load summary data</div>;
+  }
   const totalTickets = data.length;
   const openTickets = data.filter(ticket => ticket.status === 'Open').length;
   const closedTickets = data.filter(ticket => ticket.status === 'Closed').length;

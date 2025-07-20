@@ -1,0 +1,4 @@
+pandas
+scikit-learn
+joblib  # or pickle for saving model
+flask   # if using Flask as separate API (optional)

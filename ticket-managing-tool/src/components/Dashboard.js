@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import SummaryCards from "./SummaryCards";
 import StatusPieChart from "./Charts/StatusPieChart";
 import CategoryBarChart from "./Charts/CategoryBarChart";
@@ -12,15 +13,13 @@ function Dashboard() {
 
   useEffect(() => {
     // Fetch tickets
-    fetch("http://localhost:5000/api/tickets")
-      .then(res => res.json())
-      .then(json => setTickets(json || [])) // ✅ fix response shape
+    axios.get("http://localhost:5000/api/tickets")
+      .then(res => setTickets(res.data || []))
       .catch(err => console.error("Error loading tickets:", err));
 
     // Fetch employees
-    fetch("http://localhost:5000/api/employees")
-      .then(res => res.json())
-      .then(json => setEmployees(json || []))
+    axios.get("http://localhost:5000/api/employees")
+      .then(res => setEmployees(res.data || []))
       .catch(err => console.error("Error loading employees:", err));
   }, []);
 

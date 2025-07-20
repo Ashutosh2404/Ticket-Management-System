@@ -1,13 +1,14 @@
+
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/employee-ticket-stats')
-      .then(res => res.json())
-      .then(data => setEmployees(data))
+    axios.get('http://localhost:5000/api/employee-ticket-stats')
+      .then(res => setEmployees(res.data))
       .catch(err => console.error('Failed to fetch employee stats:', err));
   }, []);
 
@@ -46,7 +47,7 @@ const EmployeeTable = () => {
                 <td className="border px-4 py-2">{emp.ticketsAssigned}</td>
                 <td className="border px-4 py-2">{emp.openTickets}</td>
                 <td className="border px-4 py-2">{emp.closedTickets}</td>
-                <td className="border px-4 py-2">{emp.totalHours}</td>
+                <td className="border px-4 py-2">{Number(emp.totalHours).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>

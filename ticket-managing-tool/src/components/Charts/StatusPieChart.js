@@ -10,9 +10,13 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function StatusPieChart({ data }) {
-  const statusCounts = data.reduce((acc, ticket) => {
-    const status = ticket.status || "Unknown";
-    acc[status] = (acc[status] || 0) + 1;
+  if (!Array.isArray(data)) {
+    console.error("Invalid data passed to StatusPieChart:", data);
+    return <div>Failed to load status data</div>;
+  }
+
+  const statusCounts = data.reduce((acc, d) => {
+    acc[d.status] = (acc[d.status] || 0) + 1;
     return acc;
   }, {});
 
@@ -20,15 +24,16 @@ function StatusPieChart({ data }) {
     labels: Object.keys(statusCounts),
     datasets: [
       {
+        label: "Ticket Status",
         data: Object.values(statusCounts),
-        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#a78bfa"],
+        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
       },
     ],
   };
 
   return (
-    <div style={{ width: "300px", marginBottom: "30px" }}>
-      <h3>Status Distribution</h3>
+    <div style={{ width: "400px", marginBottom: "30px" }}>
+      <h3>Ticket Status</h3>
       <Pie data={chartData} />
     </div>
   );

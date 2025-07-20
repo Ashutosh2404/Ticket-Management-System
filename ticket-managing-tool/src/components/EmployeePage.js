@@ -1,4 +1,6 @@
+
 import React from "react";
+import axios from "axios";
 import EmployeeTable from "./EmployeeTable";
 import EmployeeTicketsBarChart from "./Charts/EmployeeTicketsBarChart";
 
@@ -6,9 +8,8 @@ const EmployeePage = () => {
   const [employeeStats, setEmployeeStats] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("http://localhost:5000/api/employee-ticket-stats")
-      .then((res) => res.json())
-      .then((data) => setEmployeeStats(data))
+    axios.get("http://localhost:5000/api/employee-ticket-stats")
+      .then((res) => setEmployeeStats(res.data))
       .catch((err) => console.error("Failed to fetch employee stats:", err));
   }, []);
 

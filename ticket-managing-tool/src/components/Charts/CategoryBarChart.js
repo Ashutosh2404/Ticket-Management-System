@@ -12,20 +12,23 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function CategoryBarChart({ data }) {
-  const categories = data.reduce((acc, ticket) => {
-    const category = ticket.category || "Others";
+  if (!Array.isArray(data)) {
+    console.error("Invalid data passed to CategoryBarChart:", data);
+    return <div>Failed to load category data</div>;
+  }
 
-    acc[category] = (acc[category] || 0) + 1;
+  const categoryCounts = data.reduce((acc, d) => {
+    acc[d.category] = (acc[d.category] || 0) + 1;
     return acc;
   }, {});
 
   const chartData = {
-    labels: Object.keys(categories),
+    labels: Object.keys(categoryCounts),
     datasets: [
       {
-        label: "Tickets by Category",
-        data: Object.values(categories),
-        backgroundColor: ["#60a5fa", "#34d399", "#fbbf24", "#f87171", "#a5b4fc"],
+        label: "Tickets",
+        data: Object.values(categoryCounts),
+        backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
       },
     ],
   };

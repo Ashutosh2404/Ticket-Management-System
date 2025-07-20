@@ -3,6 +3,7 @@ const sequelize = require("./database");
 const Employee = require("./models/Employee");
 const Ticket = require("./models/Ticket");
 const DataImported = require("./models/DataImported");
+const PredictedEstimate = require("./models/PredictedEstimate");
 
 (async () => {
   try {

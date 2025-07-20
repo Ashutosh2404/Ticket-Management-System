@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import TicketTable from "./TicketTable";
 
@@ -13,9 +14,8 @@ function TicketPage() {
   const statusFilter = query.get("status"); // 'open', 'closed', or null
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/tickets")
-      .then((res) => res.json())
-      .then((data) => setTickets(data))
+    axios.get("http://localhost:5000/api/tickets")
+      .then((res) => setTickets(res.data))
       .catch((err) => console.error("Error fetching tickets:", err));
   }, []);
 

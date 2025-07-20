@@ -1,25 +1,22 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+function EmployeeTicketsBarChart({ data }) {
+  if (!Array.isArray(data)) {
+    console.error("Invalid data passed to EmployeeTicketsBarChart:", data);
+    return <div>Failed to load employee ticket data</div>;
+  }
 
-const EmployeeTicketsBarChart = ({ data }) => {
+  // Only include employees with open tickets > 0
+  const openTicketsData = data.filter(emp => emp.openTickets && emp.openTickets > 0);
+
   const chartData = {
-    labels: data.map(emp => emp.employeeName),
+    labels: openTicketsData.map(emp => emp.employeeName),
     datasets: [
       {
-        label: "Tickets Assigned",
-        data: data.map(emp => emp.ticketsAssigned),
-        backgroundColor: "#3b82f6",
+        label: "Open Tickets",
+        data: openTicketsData.map(emp => emp.openTickets),
+        backgroundColor: "#c07d31ff",
       },
     ],
   };
@@ -27,12 +24,46 @@ const EmployeeTicketsBarChart = ({ data }) => {
   const options = {
     responsive: true,
     plugins: {
-      legend: { position: "top" },
-      title: { display: true, text: "Number of Tickets vs Employees" },
+      legend: { 
+        position: "top",
+        labels: {
+          font: { size: 18 },
+          color: "#2d3748"
+        }
+      },
+      title: { 
+        display: true, 
+        text: "Number of Tickets vs Employees",
+        font: { size: 10 },
+        color: "#c07d31ff"
+      },
     },
     scales: {
-      x: { title: { display: true, text: "Employee" } },
-      y: { title: { display: true, text: "Tickets Assigned" }, beginAtZero: true },
+      x: { 
+        title: { 
+          display: true, 
+          text: "Employees",
+          font: { size: 18 },
+          color: "#c07d31ff"
+        },
+        ticks: {
+          font: { size: 14 },
+          color: "#2d3748"
+        }
+      },
+      y: { 
+        title: { 
+          display: true, 
+          text: "Tickets Assigned",
+          font: { size: 18 },
+          color: "#c07d31ff"
+        },
+        beginAtZero: true,
+        ticks: {
+          font: { size: 14 },
+          color: "#2d3748"
+        }
+      },
     },
   };
 
@@ -42,5 +73,6 @@ const EmployeeTicketsBarChart = ({ data }) => {
     </div>
   );
 };
+
 
 export default EmployeeTicketsBarChart;

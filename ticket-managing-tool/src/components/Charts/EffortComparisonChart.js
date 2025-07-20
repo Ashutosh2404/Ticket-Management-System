@@ -12,6 +12,11 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function EffortComparisonChart({ data }) {
+  if (!Array.isArray(data)) {
+    console.error("Invalid data passed to EffortComparisonChart:", data);
+    return <div>Failed to load effort comparison data</div>;
+  }
+
   const labels = data.map(ticket => ticket.ticketNumber);
   const estimated = data.map(ticket => Number(ticket.hoursEstimated || 0));
   const actual = data.map(ticket => Number(ticket.hoursWorked || 0));
@@ -39,5 +44,6 @@ function EffortComparisonChart({ data }) {
     </div>
   );
 }
+
 
 export default EffortComparisonChart;
