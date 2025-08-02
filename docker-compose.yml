@@ -1,0 +1,43 @@
+# Define the services that make up your application
+services:
+  # Frontend service (your React app)
+  ticket-managing-tool:
+    # Specify the build context (path to your frontend directory) and Dockerfile name
+    build:
+      context: ./ticket-managing-tool
+      dockerfile: Dockerfile
+    # Port mapping: "HOST_PORT:CONTAINER_PORT"
+    # For the frontend, we map host port 3000 to the container's port 80 (where Nginx serves the app).
+    ports:
+      - "3000:80"
+    # Environment variables for the frontend container.
+    # This is crucial for your React app to know where to find the backend.
+    # 'project-backend' is the service name defined below, which acts as a hostname within the Docker network.
+    environment:
+      REACT_APP_BACKEND_URL: http://project-backend:5000
+    # Defines a dependency. This ensures 'project-backend' starts before 'ticket-managing-tool'.
+    depends_on:
+      - project-backend
+
+  # Backend service (your Express.js app with ML model)
+  project-backend:
+    # Specify the build context (path to your backend directory) and Dockerfile name
+    build:
+      context: ./project-backend
+      dockerfile: Dockerfile
+    # Port mapping: "HOST_PORT:CONTAINER_PORT"
+    # Map host port 5000 to the container's port 5000 (where your Express app listens).
+    ports:
+      - "5000:5000"
+    # Volumes for development:
+    # - Mounts your local 'project-backend' directory into '/app' in the container.
+    #   This allows for hot-reloading if your backend server (e.g., using nodemon) detects file changes.
+    # - The anonymous volume for '/app/node_modules' prevents your host's node_modules from
+    #   overwriting the ones installed inside the container, which can cause cross-platform issues.
+    volumes:
+      - ./project-backend:/app
+      - /app/node_modules
+    # Environment variables for the backend container.
+    environment:
+      NODE_ENV: development # Set your Node.js environment
+      PORT: 5000 # The port your Express app should listen on
