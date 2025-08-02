@@ -1,0 +1,18 @@
+# Ignore Node.js modules
+node_modules/
+
+# Ignore Git-related files
+.git/
+.gitignore
+
+# Ignore environment variables file (sensitive data should not be committed or put in images)
+.env
+
+# Ignore Python cache directories and virtual environments
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Ignore the Dockerfile itself
+Dockerfile
